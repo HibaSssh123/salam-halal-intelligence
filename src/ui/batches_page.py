@@ -29,9 +29,9 @@ def render_batches_page(repo):
     if submitted:
         try:
             existing = {b["batch_code"] for b in repo.list_batches()}
-            validate_batch_input(existing, batch_code, qty, prod_date, exp_date)
+            normalized_batch_code = validate_batch_input(existing, batch_code, qty, prod_date, exp_date)
             repo.create_batch_atomic(
-                batch_code=batch_code,
+                batch_code=normalized_batch_code,
                 product_id=product_label_to_id[product_label],
                 production_date=prod_date.isoformat(),
                 expiration_date=exp_date.isoformat(),

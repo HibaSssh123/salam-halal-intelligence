@@ -33,3 +33,11 @@ def test_invalid_quantity_and_dates_validation():
 
     with pytest.raises(ValueError):
         validate_batch_input(set(), "L2", 10, date.today(), date.today() - timedelta(days=1))
+
+
+def test_batch_code_is_normalized_and_duplicate_check_is_case_insensitive():
+    normalized = validate_batch_input(set(), "  L-123  ", 5, date.today(), date.today())
+    assert normalized == "L-123"
+
+    with pytest.raises(ValueError):
+        validate_batch_input({" l-123 "}, "L-123", 5, date.today(), date.today())
